@@ -11,103 +11,107 @@ class DetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 30,
+            color: Color.fromARGB(255, 54, 54, 54),
+          ),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            height: 80.h,
-            child: ListView(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 25.0, left: 35, right: 35),
-                  child: Text(
-                    "Details",
-                    style: textStyle.copyWith(fontSize: 45, color: textColor),
-                  ),
+      body: Stack(children: [
+        SizedBox(
+          height: 100.h,
+          child: ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 6.w, right: 6.w),
+                child: Text(
+                  "Details",
+                  style: textStyle.copyWith(fontSize: 45, color: textColor),
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 28.h,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(car.image), fit: BoxFit.cover),
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                  ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 28.h,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(car.image), fit: BoxFit.cover),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 35, right: 35),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        car.title,
-                        style: textStyle.copyWith(
-                            fontSize: 12.sp,
-                            color: textColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      PriceAndLocation(
-                        location: car.location,
-                        price: car.price,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Specs(car: car),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Description",
-                              style: textStyle.copyWith(
-                                  fontSize: 14.sp,
-                                  color: textColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              car.description,
-                              style: textStyle.copyWith(
-                                  fontSize: 9.sp, color: textColor2),
-                            )
-                          ]),
-                    ],
-                  ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20, left: 6.w, right: 6.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      car.title,
+                      style: textStyle.copyWith(
+                          fontSize: 12.sp,
+                          color: textColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    PriceAndLocation(
+                      location: car.location,
+                      price: car.price,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Specs(car: car),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Description",
+                            style: textStyle.copyWith(
+                                fontSize: 14.sp,
+                                color: textColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            car.description,
+                            style: textStyle.copyWith(
+                                fontSize: 9.sp, color: textColor2),
+                          )
+                        ]),
+                    Container(
+                      height: 13.h,
+                    )
+                  ],
                 ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 10.h,
+            child: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DetailViewButton(text: "Call"),
+                  DetailViewButton(text: "Message"),
+                ],
+              ),
             ),
           ),
-          Container(
-            color: Colors.transparent,
-            height: 10.h,
-            padding: EdgeInsets.only(
-              top: 10,
-              bottom: 10,
-              left: 30,
-              right: 30,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DetailViewButton(text: "Call"),
-                DetailViewButton(text: "Message"),
-              ],
-            ),
-          )
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }
@@ -120,20 +124,21 @@ class DetailViewButton extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        height: 60,
-        width: 200,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Color.fromARGB(255, 247, 2, 76),
-              Color.fromARGB(255, 247, 119, 119)
-            ]),
-            borderRadius: BorderRadius.circular(30)),
-        child: Text(
-          text,
-          style: textStyle.copyWith(fontSize: 14.sp, color: Colors.white),
-        ));
+    return AspectRatio(
+      aspectRatio: 3,
+      child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [
+                Color.fromARGB(255, 247, 2, 76),
+                Color.fromARGB(255, 247, 119, 119)
+              ]),
+              borderRadius: BorderRadius.circular(30)),
+          child: Text(
+            text,
+            style: textStyle.copyWith(fontSize: 14.sp, color: Colors.white),
+          )),
+    );
   }
 }
 
@@ -194,7 +199,7 @@ class SpecWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "${title}: ",
+          "$title: ",
           style:
               textStyle.copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
         ),
@@ -209,7 +214,7 @@ class SpecWidget extends StatelessWidget {
 }
 
 class PriceAndLocation extends StatelessWidget {
-  PriceAndLocation({
+  const PriceAndLocation({
     super.key,
     required this.price,
     required this.location,
@@ -233,7 +238,7 @@ class PriceAndLocation extends StatelessWidget {
             const SizedBox(
               width: 3,
             ),
-            Text("${price} USD",
+            Text("$price USD",
                 style: textStyle.copyWith(
                     color: textPinkColor,
                     fontSize: 12.sp,

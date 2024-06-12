@@ -176,6 +176,23 @@ class SearchBarWidget extends StatelessWidget {
           ),
           child: TextField(
             decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  splashColor: Colors.transparent,
+                  onPressed: () {
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext ctx) =>
+                            _createFilterButtomSheet());
+                  },
+                  icon: Icon(
+                    Icons.filter_alt_outlined,
+                    size: 30,
+                    color: textColor2.withAlpha(200),
+                  ),
+                ),
                 prefixIcon: Icon(
                   Icons.search,
                   color: textColor2.withAlpha(200),
@@ -188,5 +205,226 @@ class SearchBarWidget extends StatelessWidget {
                     color: textColor2.withAlpha(200), fontSize: 22)),
           ),
         ));
+  }
+
+  Container _createFilterButtomSheet() {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      height: 85.h,
+      child: Stack(children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Filter Search",
+              style: textStyle.copyWith(fontSize: 20.sp, color: textColor),
+            ),
+            Text(
+              "You can use the following filter \noptions for advanced search.",
+              style: textStyle.copyWith(fontSize: 10.sp, color: textColor2),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  const CustomDropDownMenu(
+                    hintText: "Date: Newest first",
+                    title: "Sort by",
+                  ),
+                  const CustomDropDownMenu(
+                    hintText: "All",
+                    title: "Make",
+                  ),
+                  const CustomDropDownMenu(
+                    hintText: "All",
+                    title: "Model",
+                  ),
+                  const CustomFromToWidget(
+                    title: "Model Year",
+                  ),
+                  const CustomDropDownMenu(
+                    hintText: "All",
+                    title: "Body Type",
+                  ),
+                  const CustomFromToWidget(
+                    title: "Kilometers run",
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+                height: 6.h,
+                width: double.infinity,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: DetailViewButton(text: "Apply Filters"),
+                )))
+      ]),
+    );
+  }
+}
+
+class CustomFromToWidget extends StatelessWidget {
+  const CustomFromToWidget({
+    super.key,
+    required this.title,
+  });
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      width: 50,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: textStyle.copyWith(
+                  fontSize: 14.sp,
+                  color: textColor,
+                  fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 40.w,
+                child: TextField(
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: buttomBarIconColor.withAlpha(100))),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: buttomBarIconColor.withAlpha(100))),
+                      hintText: "From",
+                      hintStyle: textStyle.copyWith(
+                          fontSize: 11.sp, color: textColor2.withAlpha(200))),
+                ),
+              ),
+              SizedBox(
+                width: 40.w,
+                child: TextField(
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: buttomBarIconColor.withAlpha(100))),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: buttomBarIconColor.withAlpha(100))),
+                      hintText: "To",
+                      hintStyle: textStyle.copyWith(
+                          fontSize: 11.sp, color: textColor2.withAlpha(200))),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomDropDownMenu extends StatelessWidget {
+  const CustomDropDownMenu({
+    super.key,
+    required this.hintText,
+    required this.title,
+  });
+  final String hintText;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: textStyle.copyWith(
+                  fontSize: 14.sp,
+                  color: textColor,
+                  fontWeight: FontWeight.bold)),
+          DropdownMenu(
+              inputDecorationTheme: InputDecorationTheme(
+                  hintStyle: textStyle.copyWith(
+                      fontSize: 11.sp, color: textColor2.withAlpha(200))),
+              textStyle: textStyle.copyWith(fontSize: 11.sp, color: textColor2),
+              width: 90.w,
+              hintText: hintText,
+              dropdownMenuEntries: const [
+                DropdownMenuEntry(value: "", label: ""),
+              ]),
+        ],
+      ),
+    );
+  }
+}
+
+class CarCardScroll extends StatelessWidget {
+  const CarCardScroll({super.key, s});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: 38.h,
+        child: ListView.builder(
+            itemCount: cars.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => CarCard(car: cars[index])));
+  }
+}
+
+class RecommendList extends StatelessWidget {
+  const RecommendList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.only(left: 35, right: 35),
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
+        ),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 25.0,
+              ),
+              child: Text(
+                "Recommended",
+                style: textStyle.copyWith(fontSize: 16.sp, color: textColor),
+              ),
+            ),
+            CarCard(
+              car: recommendedCar,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
